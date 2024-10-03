@@ -4,31 +4,67 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/punkgoden/song_library/app/internal/dto"
 	"net/http"
+	"strconv"
 )
 
+// GetSongs godoc
+//
+//	@Summary		Get Songs
+//	@Description	Returns songs
+//	@Tags			song
+//	@Accept			json
+//	@Produce		json
+//	@Param   		limit     		query   int 	true    "limit"
+//	@Param   		offset     		query   int 	true    "offset"
+//	@Param   		order     		query   string 	false   "order" 		Enums(ASC, DESC)
+//	@Param   		order_field     query   string 	false   "order_field"
+//	@Success		200		{object}		dto.GetSongsResponseDTO
+//	@Router			/songs [get]
 func (c *Controller) GetSongs(ctx *gin.Context) {
-	var songRequestDTO dto.GetSongsRequestDTO
+	limit, err := strconv.Atoi(ctx.Query("limit"))
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	offset, err := strconv.Atoi(ctx.Query("limit"))
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	songRequestDTO := dto.GetSongsRequestDTO{
+		Limit:      limit,
+		Offset:     offset,
+		Order:      ctx.Query("order"),
+		OrderField: ctx.Query("order_field"),
+	}
 	if err := ctx.ShouldBind(&songRequestDTO); err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	songs, lastId, err := c.sc.GetSongs(ctx, &songRequestDTO)
+	songs, err := c.sc.GetSongs(ctx, &songRequestDTO)
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 	songResponseDTO := dto.GetSongsResponseDTO{
-		Songs:  songs,
-		LastId: lastId,
+		Songs: songs,
 	}
 	ctx.JSON(http.StatusOK, &songResponseDTO)
 }
 
+// GetSong godoc
+//
+//	@Summary		Get Song
+//	@Description	Returns song by name
+//	@Tags			song
+//	@Accept			json
+//	@Produce		json
+//	@Param   		name     query   string 	true   "name"
+//	@Success		200		{object}		dto.GetSongResponseDTO
+//	@Router			/song [get]
 func (c *Controller) GetSong(ctx *gin.Context) {
-	var getSongRequestDTO dto.GetSongRequestDTO
-	if err := ctx.ShouldBind(&getSongRequestDTO); err != nil {
-		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		return
+	getSongRequestDTO := dto.GetSongRequestDTO{
+		Name: ctx.Query("name"),
 	}
 	song, err := c.sc.GetSong(ctx, getSongRequestDTO.Name)
 	if err != nil {
@@ -41,6 +77,39 @@ func (c *Controller) GetSong(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, &songResponseDTO)
 }
 
+// GetTextSong godoc
+//
+//	@Summary		Get Song
+//	@Description	Returns song by name
+//	@Tags			song
+//	@Accept			json
+//	@Produce		json
+//	@Param   		name     query   string 	true   "name"
+//	@Success		200		{object}		string
+//	@Router			/text-song [get]
+func (c *Controller) GetTextSong(ctx *gin.Context) {
+	getSongRequestDTO := dto.GetSongRequestDTO{
+		Name: ctx.Query("name"),
+	}
+	textSong, err := c.sc.GetTextSong(ctx, getSongRequestDTO.Name)
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	ctx.JSON(http.StatusOK, gin.H{"text": textSong})
+}
+
+// CreateSong godoc
+//
+//	@Summary		Create song
+//	@Description	Returns song
+//	@Tags			song
+//
+// @Accept  json
+// @Produce  json
+// @Param   		song     	body   dto.CreateSongRequestDTO 	true    "name"
+// @Success		201		{object}		dto.CreateAndUpdateSongResponseDTO
+// @Router			/song [post]
 func (c *Controller) CreateSong(ctx *gin.Context) {
 	var createSongRequestDTO dto.CreateSongRequestDTO
 	if err := ctx.ShouldBind(&createSongRequestDTO); err != nil {
@@ -58,6 +127,18 @@ func (c *Controller) CreateSong(ctx *gin.Context) {
 	ctx.JSON(http.StatusCreated, &songResponseDTO)
 }
 
+// UpdateSong godoc
+//
+//	@Summary		Update song
+//	@Description	Returns song
+//	@Tags			song
+//	@Accept			json
+//	@Produce		json
+//	@Param   		name     	body   string 	true    "name"
+//	@Param   		group     	body   string 	false   "group"
+//	@Param   		text     	body   string 	false   "text"
+//	@Success		200		{object}		dto.CreateAndUpdateSongResponseDTO
+//	@Router			/song [patch]
 func (c *Controller) UpdateSong(ctx *gin.Context) {
 	var updateSongRequestDTO dto.UpdateSongRequestDTO
 	if err := ctx.ShouldBind(&updateSongRequestDTO); err != nil {
@@ -75,6 +156,16 @@ func (c *Controller) UpdateSong(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, &songResponseDTO)
 }
 
+// DeleteSong godoc
+//
+//	@Summary		Delete song
+//	@Description	Delete song by song name
+//	@Tags			song
+//	@Accept			json
+//	@Produce		json
+//	@Param   		name	body	string	true	"name"
+//	@Success		204
+//	@Router			/song [delete]
 func (c *Controller) DeleteSong(ctx *gin.Context) {
 	var deleteSongRequestDTO dto.DeleteSongRequestDTO
 	if err := ctx.ShouldBind(&deleteSongRequestDTO); err != nil {

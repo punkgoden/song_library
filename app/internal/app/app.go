@@ -1,6 +1,7 @@
 package app
 
 import (
+	"context"
 	"github.com/gin-gonic/gin"
 	"github.com/punkgoden/song_library/app/internal/config"
 	http_controller "github.com/punkgoden/song_library/app/internal/controller/http"
@@ -13,7 +14,7 @@ import (
 
 func RunApplication(saveToFile bool) {
 	// Init Logger
-	logging.Init(saveToFile)
+	logging.Init(false)
 	log := logging.GetLogger()
 	log.Infoln("Connect logger successfully!")
 
@@ -21,7 +22,7 @@ func RunApplication(saveToFile bool) {
 	cfg := config.GetConfig()
 	log.Infoln("Connect config successfully!")
 
-	//ctx := context.Background()
+	ctx := context.Background()
 
 	db, err := database.NewPostgresDB(cfg, &log)
 	if err != nil {
@@ -37,7 +38,7 @@ func RunApplication(saveToFile bool) {
 	log.Infoln("Connect service successfully!")
 
 	ginRouter := gin.New()
-	httpController := http_controller.NewController(log, *service, *cfg)
+	httpController := http_controller.NewController(ctx, log, *service, *cfg)
 	handlers := httpController.InitRoutes(ginRouter)
 	log.Infoln("Connect GIN successfully!")
 

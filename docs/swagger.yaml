@@ -1,0 +1,202 @@
+basePath: /api/
+definitions:
+  dto.CreateAndUpdateSongResponseDTO:
+    properties:
+      song:
+        $ref: '#/definitions/entity.Song'
+    type: object
+  dto.CreateSongRequestDTO:
+    properties:
+      group:
+        type: string
+      listenings:
+        type: integer
+      name:
+        type: string
+      text:
+        type: string
+    type: object
+  dto.GetSongResponseDTO:
+    properties:
+      song:
+        $ref: '#/definitions/entity.Song'
+    type: object
+  dto.GetSongsResponseDTO:
+    properties:
+      songs:
+        items:
+          $ref: '#/definitions/entity.Song'
+        type: array
+    type: object
+  entity.Song:
+    properties:
+      group:
+        type: string
+      id:
+        type: integer
+      listenings:
+        type: integer
+      name:
+        type: string
+      text:
+        type: string
+    type: object
+info:
+  contact:
+    name: go_rshok
+    url: https://t.me/go_rshok
+  description: Test project
+  title: Song Library
+  version: "0.1"
+paths:
+  /song:
+    delete:
+      consumes:
+      - application/json
+      description: Delete song by song name
+      parameters:
+      - description: name
+        in: body
+        name: name
+        required: true
+        schema:
+          type: string
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+      summary: Delete song
+      tags:
+      - song
+    get:
+      consumes:
+      - application/json
+      description: Returns song by name
+      parameters:
+      - description: name
+        in: query
+        name: name
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.GetSongResponseDTO'
+      summary: Get Song
+      tags:
+      - song
+    patch:
+      consumes:
+      - application/json
+      description: Returns song
+      parameters:
+      - description: name
+        in: body
+        name: name
+        required: true
+        schema:
+          type: string
+      - description: group
+        in: body
+        name: group
+        schema:
+          type: string
+      - description: text
+        in: body
+        name: text
+        schema:
+          type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.CreateAndUpdateSongResponseDTO'
+      summary: Update song
+      tags:
+      - song
+    post:
+      consumes:
+      - application/json
+      description: Returns song
+      parameters:
+      - description: name
+        in: body
+        name: song
+        required: true
+        schema:
+          $ref: '#/definitions/dto.CreateSongRequestDTO'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/dto.CreateAndUpdateSongResponseDTO'
+      summary: Create song
+      tags:
+      - song
+  /songs:
+    get:
+      consumes:
+      - application/json
+      description: Returns songs
+      parameters:
+      - description: limit
+        in: query
+        name: limit
+        required: true
+        type: integer
+      - description: offset
+        in: query
+        name: offset
+        required: true
+        type: integer
+      - description: order
+        enum:
+        - ASC
+        - DESC
+        in: query
+        name: order
+        type: string
+      - description: order_field
+        in: query
+        name: order_field
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.GetSongsResponseDTO'
+      summary: Get Songs
+      tags:
+      - song
+  /text-song:
+    get:
+      consumes:
+      - application/json
+      description: Returns song by name
+      parameters:
+      - description: name
+        in: query
+        name: name
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+      summary: Get Song
+      tags:
+      - song
+swagger: "2.0"

@@ -9,19 +9,18 @@ import (
 func (s *Service) GetSongs(
 	ctx context.Context,
 	songDTO *dto.GetSongsRequestDTO,
-) ([]*entity.Song, int, error) {
+) ([]*entity.Song, error) {
 	songs, err := s.st.GetSongs(
 		ctx,
 		songDTO.Limit,
-		songDTO.LastId,
+		songDTO.Offset,
 		songDTO.Order,
 		songDTO.OrderField,
 	)
 	if err != nil {
-		return nil, 0, err
+		return nil, err
 	}
-	newLastId := songs[len(songs)-1].ID
-	return songs, newLastId, nil
+	return songs, nil
 }
 
 func (s *Service) GetSong(ctx context.Context, name string) (*entity.Song, error) {
@@ -30,6 +29,14 @@ func (s *Service) GetSong(ctx context.Context, name string) (*entity.Song, error
 		return nil, err
 	}
 	return song, nil
+}
+
+func (s *Service) GetTextSong(ctx context.Context, name string) (string, error) {
+	textSong, err := s.st.GetTextSong(ctx, name)
+	if err != nil {
+		return "", err
+	}
+	return textSong, nil
 }
 
 func (s *Service) DeleteSong(

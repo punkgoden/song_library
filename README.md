@@ -3,3 +3,5 @@
 ### TODO:
 1. Добавить github action (CI)
 2. Nginx + letsencrypt
+
+swag init -g app/internal/controller/http/controller.go
