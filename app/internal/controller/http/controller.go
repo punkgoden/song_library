@@ -29,12 +29,13 @@ func (c *Controller) InitRoutes(r *gin.Engine) *gin.Engine {
 
 	api := r.Group("api/")
 	{
-		r.Group("library/")
+		library := r.Group("library/")
 		{
-			api.GET("song", c.GetSong)
-			api.POST("song", c.CreateSong)
-			api.PATCH("song", c.UpdateSong)
-			api.DELETE("song", c.DeleteSong)
+			library.GET("songs", c.GetSongs)
+			library.GET("song", c.GetSong)
+			library.POST("song", c.CreateSong)
+			library.PATCH("song", c.UpdateSong)
+			library.DELETE("song", c.DeleteSong)
 		}
 		api.GET("healthcheck", c.Healthcheck)
 	}
