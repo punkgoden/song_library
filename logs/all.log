@@ -1,0 +1,6 @@
+[36mINFO[0m[2024-10-03T12:12:28Z]github.com/punkgoden/song_library/app/internal/app.RunApplication() app.go:18 Connect logger successfully!                 
+[36mINFO[0m[2024-10-03T12:12:28Z]github.com/punkgoden/song_library/app/internal/app.RunApplication() app.go:22 Connect config successfully!                 
+[36mINFO[0m[2024-10-03T12:12:28Z]github.com/punkgoden/song_library/app/internal/app.RunApplication() app.go:30 Connect database successfully!               
+[36mINFO[0m[2024-10-03T12:12:28Z]github.com/punkgoden/song_library/app/internal/app.RunApplication() app.go:35 Connect storage successfully!                
+[36mINFO[0m[2024-10-03T12:12:28Z]github.com/punkgoden/song_library/app/internal/app.RunApplication() app.go:37 Connect service successfully!                
+[36mINFO[0m[2024-10-03T12:12:28Z]github.com/punkgoden/song_library/app/internal/app.RunApplication() app.go:42 Connect GIN successfully!                    

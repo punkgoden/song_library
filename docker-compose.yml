@@ -1,0 +1,15 @@
+
+
+services:
+  song-library-app:
+    container_name: song-library-app
+    build:
+      context: .
+    command: [ "go", "run", "./app/cmd/main/main.go" ]
+    env_file:
+      - ./.envs/.env
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/app:z
+    restart: always

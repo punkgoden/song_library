@@ -2,11 +2,11 @@
 services:
   postgres:
     image: postgres:15
-    container_name: postgres_song_library
+    container_name: postgres-song-library
     ports:
-      - "5430:5432"
+      - "5432:5432"
     volumes:
       - ./pg_hba.conf:/etc/postgresql/pg_hba.conf
-      - ./.docker-volumes/idx_pg_data:/var/lib/postgresql/data
+#      - ./.docker-volumes/idx_pg_data:/var/lib/postgresql/data
     env_file:
       - .envs/.env
