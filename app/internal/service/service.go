@@ -1,8 +1,8 @@
 package service
 
 import (
-	"github.com/punkgoden/song_library/app/internal/config"
 	"github.com/punkgoden/song_library/app/internal/storage"
+	"github.com/punkgoden/song_library/app/pkg/config"
 	"github.com/punkgoden/song_library/app/pkg/logging"
 )
 

@@ -3,11 +3,11 @@ package app
 import (
 	"context"
 	"github.com/gin-gonic/gin"
-	"github.com/punkgoden/song_library/app/internal/config"
 	http_controller "github.com/punkgoden/song_library/app/internal/controller/http"
 	database "github.com/punkgoden/song_library/app/internal/db/postgres"
 	sc "github.com/punkgoden/song_library/app/internal/service"
 	st "github.com/punkgoden/song_library/app/internal/storage"
+	"github.com/punkgoden/song_library/app/pkg/config"
 	"github.com/punkgoden/song_library/app/pkg/logging"
 	"github.com/punkgoden/song_library/app/pkg/server"
 )

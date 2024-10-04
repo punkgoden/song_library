@@ -34,7 +34,7 @@ const docTemplate = `{
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "name",
+                        "description": "Get song by name",
                         "name": "name",
                         "in": "query",
                         "required": true
@@ -63,7 +63,7 @@ const docTemplate = `{
                 "summary": "Create song",
                 "parameters": [
                     {
-                        "description": "name",
+                        "description": "Create Song",
                         "name": "song",
                         "in": "body",
                         "required": true,
@@ -95,12 +95,12 @@ const docTemplate = `{
                 "summary": "Delete song",
                 "parameters": [
                     {
-                        "description": "name",
-                        "name": "name",
+                        "description": "Delete Song",
+                        "name": "song",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/dto.DeleteSongRequestDTO"
                         }
                     }
                 ],
@@ -124,29 +124,20 @@ const docTemplate = `{
                 "summary": "Update song",
                 "parameters": [
                     {
-                        "description": "name",
-                        "name": "name",
+                        "description": "Update Song",
+                        "name": "song",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/dto.UpdateSongRequestDTO"
                         }
                     },
                     {
-                        "description": "group",
-                        "name": "group",
-                        "in": "body",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "description": "text",
-                        "name": "text",
-                        "in": "body",
-                        "schema": {
-                            "type": "string"
-                        }
+                        "type": "string",
+                        "description": "Update song name",
+                        "name": "name",
+                        "in": "query",
+                        "required": true
                     }
                 ],
                 "responses": {
@@ -226,11 +217,11 @@ const docTemplate = `{
                 "tags": [
                     "song"
                 ],
-                "summary": "Get Song",
+                "summary": "Get Text Song",
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "name",
+                        "description": "Get text song by name",
                         "name": "name",
                         "in": "query",
                         "required": true
@@ -273,6 +264,14 @@ const docTemplate = `{
                 }
             }
         },
+        "dto.DeleteSongRequestDTO": {
+            "type": "object",
+            "properties": {
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
         "dto.GetSongResponseDTO": {
             "type": "object",
             "properties": {
@@ -289,6 +288,20 @@ const docTemplate = `{
                     "items": {
                         "$ref": "#/definitions/entity.Song"
                     }
+                }
+            }
+        },
+        "dto.UpdateSongRequestDTO": {
+            "type": "object",
+            "properties": {
+                "group": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "text": {
+                    "type": "string"
                 }
             }
         },

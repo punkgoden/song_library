@@ -52,12 +52,14 @@ func (s *Service) DeleteSong(
 func (s *Service) UpdateSong(
 	ctx context.Context,
 	updateSongRequestDTO dto.UpdateSongRequestDTO,
+	songName string,
 ) (*entity.Song, error) {
 	song, err := s.st.UpdateSong(
 		ctx,
 		updateSongRequestDTO.Name,
 		updateSongRequestDTO.Group,
 		updateSongRequestDTO.Text,
+		songName,
 	)
 	if err != nil {
 		return nil, err

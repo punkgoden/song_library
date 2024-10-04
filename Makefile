@@ -13,3 +13,5 @@ down_song:
 	docker compose -f docker-compose.yml down
 logs_song:
 	docker compose -f docker-compose.yml logs -f
+down_vol_song:
+	docker compose -f docker-compose.yml down -v

@@ -2,6 +2,7 @@ package storage
 
 import (
 	"context"
+	"fmt"
 	"github.com/punkgoden/song_library/app/internal/entity"
 )
 
@@ -59,10 +60,10 @@ func (o *Storage) DeleteSong(ctx context.Context, name string) error {
 }
 
 func (o *Storage) UpdateSong(
-	ctx context.Context, name, group, text string,
+	ctx context.Context, name, group, text, updSongName string,
 ) (*entity.Song, error) {
 	tx := o.db.WithContext(ctx)
-	var song *entity.Song
+	var song entity.Song
 	var songUpd entity.Song
 	if name != "" {
 		songUpd.Name = name
@@ -73,11 +74,14 @@ func (o *Storage) UpdateSong(
 	if text != "" {
 		songUpd.Text = text
 	}
-	if err := tx.Model(&song).Where("name = ?", name).
-		Updates(songUpd).Find(&song).Error; err != nil {
+	fmt.Println(songUpd)
+	if err := tx.Model(&song).Where("name = ?", updSongName).Updates(songUpd).Error; err != nil {
 		return nil, err
 	}
-	return song, nil
+	if err := tx.Model(&song).Where("name = ?", name).First(&song).Error; err != nil {
+		return nil, err
+	}
+	return &song, nil
 }
 
 func (o *Storage) CreateSong(

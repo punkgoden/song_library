@@ -16,6 +16,11 @@ definitions:
       text:
         type: string
     type: object
+  dto.DeleteSongRequestDTO:
+    properties:
+      name:
+        type: string
+    type: object
   dto.GetSongResponseDTO:
     properties:
       song:
@@ -27,6 +32,15 @@ definitions:
         items:
           $ref: '#/definitions/entity.Song'
         type: array
+    type: object
+  dto.UpdateSongRequestDTO:
+    properties:
+      group:
+        type: string
+      name:
+        type: string
+      text:
+        type: string
     type: object
   entity.Song:
     properties:
@@ -55,12 +69,12 @@ paths:
       - application/json
       description: Delete song by song name
       parameters:
-      - description: name
+      - description: Delete Song
         in: body
-        name: name
+        name: song
         required: true
         schema:
-          type: string
+          $ref: '#/definitions/dto.DeleteSongRequestDTO'
       produces:
       - application/json
       responses:
@@ -74,7 +88,7 @@ paths:
       - application/json
       description: Returns song by name
       parameters:
-      - description: name
+      - description: Get song by name
         in: query
         name: name
         required: true
@@ -94,22 +108,17 @@ paths:
       - application/json
       description: Returns song
       parameters:
-      - description: name
+      - description: Update Song
         in: body
-        name: name
+        name: song
         required: true
         schema:
-          type: string
-      - description: group
-        in: body
-        name: group
-        schema:
-          type: string
-      - description: text
-        in: body
-        name: text
-        schema:
-          type: string
+          $ref: '#/definitions/dto.UpdateSongRequestDTO'
+      - description: Update song name
+        in: query
+        name: name
+        required: true
+        type: string
       produces:
       - application/json
       responses:
@@ -125,7 +134,7 @@ paths:
       - application/json
       description: Returns song
       parameters:
-      - description: name
+      - description: Create Song
         in: body
         name: song
         required: true
@@ -184,7 +193,7 @@ paths:
       - application/json
       description: Returns song by name
       parameters:
-      - description: name
+      - description: Get text song by name
         in: query
         name: name
         required: true
@@ -196,7 +205,7 @@ paths:
           description: OK
           schema:
             type: string
-      summary: Get Song
+      summary: Get Text Song
       tags:
       - song
 swagger: "2.0"

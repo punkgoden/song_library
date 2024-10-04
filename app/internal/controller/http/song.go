@@ -1,6 +1,7 @@
 package http_controller
 
 import (
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/punkgoden/song_library/app/internal/dto"
 	"net/http"
@@ -59,7 +60,7 @@ func (c *Controller) GetSongs(ctx *gin.Context) {
 //	@Tags			song
 //	@Accept			json
 //	@Produce		json
-//	@Param   		name     query   string 	true   "name"
+//	@Param   		name     query   string 	true   "Get song by name"
 //	@Success		200		{object}		dto.GetSongResponseDTO
 //	@Router			/song [get]
 func (c *Controller) GetSong(ctx *gin.Context) {
@@ -79,12 +80,12 @@ func (c *Controller) GetSong(ctx *gin.Context) {
 
 // GetTextSong godoc
 //
-//	@Summary		Get Song
+//	@Summary		Get Text Song
 //	@Description	Returns song by name
 //	@Tags			song
 //	@Accept			json
 //	@Produce		json
-//	@Param   		name     query   string 	true   "name"
+//	@Param   		name     query   string 	true   "Get text song by name"
 //	@Success		200		{object}		string
 //	@Router			/text-song [get]
 func (c *Controller) GetTextSong(ctx *gin.Context) {
@@ -104,12 +105,11 @@ func (c *Controller) GetTextSong(ctx *gin.Context) {
 //	@Summary		Create song
 //	@Description	Returns song
 //	@Tags			song
-//
-// @Accept  json
-// @Produce  json
-// @Param   		song     	body   dto.CreateSongRequestDTO 	true    "name"
-// @Success		201		{object}		dto.CreateAndUpdateSongResponseDTO
-// @Router			/song [post]
+//	@Accept  json
+//	@Produce  json
+//	@Param   		song     	body   dto.CreateSongRequestDTO 	true    "Create Song"
+//	@Success		201		{object}		dto.CreateAndUpdateSongResponseDTO
+//	@Router			/song [post]
 func (c *Controller) CreateSong(ctx *gin.Context) {
 	var createSongRequestDTO dto.CreateSongRequestDTO
 	if err := ctx.ShouldBind(&createSongRequestDTO); err != nil {
@@ -132,11 +132,10 @@ func (c *Controller) CreateSong(ctx *gin.Context) {
 //	@Summary		Update song
 //	@Description	Returns song
 //	@Tags			song
-//	@Accept			json
-//	@Produce		json
-//	@Param   		name     	body   string 	true    "name"
-//	@Param   		group     	body   string 	false   "group"
-//	@Param   		text     	body   string 	false   "text"
+//	@Accept  json
+//	@Produce  json
+//	@Param   		song     	body   dto.UpdateSongRequestDTO 	true    "Update Song"
+//	@Param   		name     	query   string 						true   	"Update song name"
 //	@Success		200		{object}		dto.CreateAndUpdateSongResponseDTO
 //	@Router			/song [patch]
 func (c *Controller) UpdateSong(ctx *gin.Context) {
@@ -145,7 +144,9 @@ func (c *Controller) UpdateSong(ctx *gin.Context) {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	song, err := c.sc.UpdateSong(ctx, updateSongRequestDTO)
+	songName := ctx.Query("name")
+	fmt.Println(songName)
+	song, err := c.sc.UpdateSong(ctx, updateSongRequestDTO, songName)
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
@@ -163,7 +164,7 @@ func (c *Controller) UpdateSong(ctx *gin.Context) {
 //	@Tags			song
 //	@Accept			json
 //	@Produce		json
-//	@Param   		name	body	string	true	"name"
+//	@Param   		song     	body   dto.DeleteSongRequestDTO 	true    "Delete Song"
 //	@Success		204
 //	@Router			/song [delete]
 func (c *Controller) DeleteSong(ctx *gin.Context) {

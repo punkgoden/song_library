@@ -3,8 +3,8 @@ package http_controller
 import (
 	"context"
 	"github.com/gin-gonic/gin"
-	"github.com/punkgoden/song_library/app/internal/config"
 	"github.com/punkgoden/song_library/app/internal/service"
+	"github.com/punkgoden/song_library/app/pkg/config"
 	"github.com/punkgoden/song_library/app/pkg/logging"
 	"github.com/punkgoden/song_library/docs"
 	swaggerfiles "github.com/swaggo/files"
